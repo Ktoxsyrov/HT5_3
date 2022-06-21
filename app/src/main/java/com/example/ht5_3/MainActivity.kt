@@ -1,0 +1,52 @@
+package com.example.ht5_3
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
+import com.example.ht5_3.databinding.ActivityMainBinding
+import com.facebook.drawee.backends.pipeline.Fresco
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    lateinit var catViewModel: CatViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Fresco.initialize(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        supportActionBar?.hide()
+
+        catViewModel = ViewModelProvider(this)[CatViewModel::class.java]
+
+        getImage()
+
+        binding.likeButton.setOnClickListener {
+            catViewModel.like()
+            getImage()
+            binding.likeButton.isClickable = false
+        }
+
+        binding.dislikeButton.setOnClickListener {
+            getImage()
+        }
+
+        binding.favoritesButton.setOnClickListener {
+            supportFragmentManager.beginTransaction().
+            replace(R.id.containerForFavs,FavoritesFragment(catViewModel.getFavoriteCats()))
+                .commit()
+        }
+    }
+
+    private fun getImage(){
+        CoroutineScope(Job()).launch {
+            binding.catImage.setImageURI(catViewModel.getCat().url.toUri())
+            binding.likeButton.isClickable = true
+        }
+    }
+}
