@@ -5,11 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    android:background="@color/blue">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/cat_item"
+        android:layout_marginBottom="80dp"
         />
+    <ImageButton
+        android:id="@+id/backToFeedButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="bottom|center"
+        android:background="@null"
+        android:src="@drawable/ic_baseline_apps_24"
+        android:scaleType="fitCenter"
+        app:tint="@color/yellow" />
 </FrameLayout>
